@@ -41,6 +41,7 @@ const StillCarousel = () => {
   const progress = useRef(0)
   const startX = useRef(0)
   const isDown = useRef(false)
+  const speedWheel = 0.02
   const speedDrag = -0.3
   const oldProgress = useRef(0)
   const speed = useRef(0)
@@ -79,6 +80,16 @@ const StillCarousel = () => {
       $post.current.thickness = speed.current
     }
   })
+
+  /*--------------------
+  Handle Wheel
+  --------------------*/
+  const handleWheel = (e) => {
+    if (activePlane !== null) return
+    const isVerticalScroll = Math.abs(e.deltaY) > Math.abs(e.deltaX)
+    const wheelProgress = isVerticalScroll ? e.deltaY : e.deltaX
+    progress.current = progress.current + wheelProgress * speedWheel
+  }
 
   /*--------------------
   Handle Down
@@ -124,6 +135,7 @@ const StillCarousel = () => {
     return (
       <mesh
         position={[0, 0, -0.01]}
+        onWheel={handleWheel}
         onPointerDown={handleDown}
         onPointerUp={handleUp}
         onPointerMove={handleMove}
