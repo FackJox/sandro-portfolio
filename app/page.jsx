@@ -31,17 +31,17 @@ const Common = dynamic(() => import('@/components/canvas/View').then((mod) => mo
 export default function Page() {
   return (
     <>
-      <div className='flex w-full flex-col overflow flex-wrap items-center md:flex-row'>
+      <div className='mx-auto flex w-full flex-col overflow flex-wrap items-center md:flex-row   '>
         {/* jumbo */}
-        <div className='flex w-full flex-col items-start justify-center text-center'>
+        <div className='flex w-full flex-col items-start justify-center py-12 text-center'>
         <h2>Filmmaker and High Altitude DP</h2>
         </div>
            
       </div>
 
-      <div className='flex w-full flex-col flex-wrap items-center'>
-      <div className='flex w-full flex-col items-start justify-center text-center'>
-        <View className='flex w-full flex-col items-center justify-center'>
+      <div className='flex w-full flex-col flex-wrap items-center overflow-auto'>
+      <div className='relative w-full '>
+        <View className='flex w-full h-96 '>
             <Suspense fallback={null}>
               <HeroText route='/blob' scale={0.6} position={[0, 0, 0]} rotation={[0,0,0]}/>
               <Common />
@@ -69,23 +69,7 @@ export default function Page() {
         </div>
        
 
-        {/* <div className='relative h-48 w-full sm:w-1/2'>
-          <View orbit className='relative h-full animate-bounce sm:h-48 sm:w-full'>
-            <Suspense fallback={null}>
-              <Duck route='/blob' scale={2} position={[0, -1.6, 0]} />
-              <Common color={'lightblue'} />
-            </Suspense>
-          </View>
-        </div>
-        <div className='w-full p-6 sm:w-1/2'>
-          <h2 className='mb-3 text-3xl font-bold leading-none text-gray-800'>Dom and 3D are synchronized</h2>
-          <p className='mb-8 text-gray-600'>
-            3D Divs are renderer through the View component. It uses gl.scissor to cut the viewport into segments. You
-            tie a view to a tracking div which then controls the position and bounds of the viewport. This allows you to
-            have multiple views with a single, performant canvas. These views will follow their tracking elements,
-            scroll along, resize, etc.
-          </p>
-        </div> */}
+      
 
       </div>
     </>
