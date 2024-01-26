@@ -1,5 +1,4 @@
 import { useLoader, extend, useFrame } from '@react-three/fiber'
-import { useControls } from 'leva'
 import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
@@ -11,7 +10,7 @@ export default function HeroText() {
   const ref2 = useRef()
   const [textIndex, setTextIndex] = useState(0);
   const texts = ['HIGH ALTITUDES', 'HOSTILE ENVIRONMENTS'];
-  const { color } = useControls({ color: '#FCC300' })
+  const color  =  '#FCC300' 
   const font = useLoader(FontLoader, '/fonts/brandon_black.json')
   const config = useMemo(() => ({ font, size: 3, height: 0.001, depth: 0 }), [font])
 

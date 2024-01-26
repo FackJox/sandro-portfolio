@@ -1,22 +1,21 @@
-import React, { Suspense } from "react";
-import { useVideoTexture, OrbitControls, PerspectiveCamera } from '@react-three/drei'
+import React, { Suspense, useRef, useState, useEffect } from "react";
+import { useFrame } from '@react-three/fiber';
+import { useVideoTexture } from '@react-three/drei';
+import gsap from 'gsap';
+
 const drei = '/drei.webm';
 const matrixShort = '/matrixShort.webm';
 const galaxyShort = '/galaxyShort.webm';
 
 const NUMBER_OF_SEGMENTS = 5;
+const PLANE_WIDTH = 1; // Assuming a plane width similar to StillCarousel
+const PLANE_GAP = 0.1; // Assuming a gap similar to StillCarousel
 
-export function CylinderSplit({ VideoSrc, rotation, ...props }) {
+
+export function CylinderSplit({ VideoSrc, rotation, position, ...props }) {
     let texture;
     if (typeof window !== 'undefined') {
       texture = useVideoTexture(VideoSrc, {
-        onLoad: (texture) => {
-          texture.image.play(); // Play the video
-          console.log("🚀 ~ CylinderSplit ~ texture:", texture);
-        },
-        onError: (error) => {
-          console.error("Error loading texture:", error);
-        },
         start: true, // Add this line
         muted: true, // Mute the video before it's loaded
       });
@@ -26,7 +25,6 @@ export function CylinderSplit({ VideoSrc, rotation, ...props }) {
   const height = (1024 / 720) / thetaLength * 1.07;
 
   const cylinderArgs = [2, 2, height, 16, 1, 1, 1, thetaLength];
-  console.log('Cylinder Args:', cylinderArgs); // Log the cylinder arguments
 
   return (
     <mesh position={[0, 0, 0]} rotation={rotation} >
@@ -43,7 +41,63 @@ export function CylinderSplit({ VideoSrc, rotation, ...props }) {
 }
 
 export default function MotionCarousel() {
-  console.log("test")
+  const groupRef = useRef();
+  const [activeSegment, setActiveSegment] = useState(0);
+  const isDown = useRef(false);
+  const startX = useRef(0);
+  const progress = useRef(0);
+  const speedDrag = -0.3;
+
+  const handleDown = (e) => {
+    isDown.current = true;
+    startX.current = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+  };
+
+  const handleUp = () => {
+    isDown.current = false;
+  };
+
+  const handleMove = (e) => {
+    if (!isDown.current) return;
+    const x = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    const mouseProgress = (x - startX.current) * speedDrag;
+    progress.current += mouseProgress;
+    startX.current = x;
+  };
+
+  useFrame(() => {
+    if (groupRef.current) {
+      const segments = groupRef.current.children;
+      const segmentAngle = (2 * Math.PI) / NUMBER_OF_SEGMENTS;
+      const active = Math.floor(progress.current / (PLANE_WIDTH + PLANE_GAP)) % NUMBER_OF_SEGMENTS;
+      setActiveSegment(active);
+
+      segments.forEach((segment, index) => {
+        const angle = segmentAngle * (index - active);
+        gsap.to(segment.rotation, {
+          y: angle,
+          duration: 0.5,
+          ease: 'power3.out'
+        });
+      });
+    }
+  });
+
+  useEffect(() => {
+    window.addEventListener('pointerdown', handleDown);
+    window.addEventListener('pointerup', handleUp);
+    window.addEventListener('pointermove', handleMove);
+    window.addEventListener('pointerleave', handleUp);
+    window.addEventListener('pointercancel', handleUp);
+
+    return () => {
+      window.removeEventListener('pointerdown', handleDown);
+      window.removeEventListener('pointerup', handleUp);
+      window.removeEventListener('pointermove', handleMove);
+      window.removeEventListener('pointerleave', handleUp);
+      window.removeEventListener('pointercancel', handleUp);
+    };
+  }, []);
 
   return (
     <>
@@ -68,7 +122,7 @@ export default function MotionCarousel() {
         near={0.001}
         position={[0, 0, 0]}
       /> */}
-      <group >
+      <group ref={groupRef}>
       <React.Suspense fallback={<meshBasicMaterial wireframe />}>
  
 

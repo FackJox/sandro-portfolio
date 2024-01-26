@@ -2,14 +2,11 @@
 
 import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
 
 const StillCarousel = dynamic(() => import('@/components/canvas/StillCarousel'), { ssr: false })
-
-const Logo = dynamic(() => import('@/components/canvas/Examples').then((mod) => mod.Logo), { ssr: false })
 const HeroText = dynamic(() => import('@/components/canvas/HeroText'), { ssr: false })
-
-const Dog = dynamic(() => import('@/components/canvas/Examples').then((mod) => mod.Dog), { ssr: false })
-const Duck = dynamic(() => import('@/components/canvas/Examples').then((mod) => mod.Duck), { ssr: false })
 const MotionCarousel = dynamic(() => import('@/components/canvas/MotionCarousel'), { ssr: false })
 const View = dynamic(() => import('@/components/canvas/View').then((mod) => mod.View), {
   ssr: false,
@@ -30,48 +27,92 @@ const Common = dynamic(() => import('@/components/canvas/View').then((mod) => mo
 
 export default function Page() {
   return (
-    <>
-      <div className='mx-auto flex w-full flex-col overflow flex-wrap items-center md:flex-row   '>
-        {/* jumbo */}
-        <div className='flex w-full flex-col items-start justify-center py-12 text-center'>
-        <h2>Filmmaker and High Altitude DP</h2>
-        </div>
-           
+    <div className='flex flex-col items-center w-screen overflow-auto justify-start'> 
+      <div className='flex items-center mb-4 sm:mb-8 w-full h-2/6'> 
+        <p className='font-Poppins text-lg sm:text-xl md:text-2xl text-yellow text-center'>
+          My name is Sandro, I&apos;m a freelance film maker, photographer and part time ski bum.
+        </p>
       </div>
 
-      <div className='flex w-full flex-col flex-wrap items-center overflow-auto'>
-      <div className='relative w-full '>
-        <View className='flex w-full h-96 '>
+      <div className='w-screen '> 
+        <div className='relative w-screen'> 
+        <View className='w-full h-screen'>
             <Suspense fallback={null}>
               <HeroText route='/blob' scale={0.6} position={[0, 0, 0]} rotation={[0,0,0]}/>
               <Common />
             </Suspense>
           </View>
         </div>
-        {/* first row */}
-        
-        <div className='relative w-full'>
-          <View className='relative h-96 w-full'>
+        <div className='flex items-center mb-4 sm:mb-8 w-screen h-2/6'> 
+          <p className='font-Poppins text-lg sm:text-xl md:text-2xl text-yellow px-4 sm:px-8 md:px-16 text-center'>
+            I love people, cameras and mountains and have spent the last decade bringing those passions together.
+          </p>
+        </div>
+
+        <div className='relative w-screen'> 
+        <View className='w-full h-screen'>
             <Suspense fallback={null}>
               <StillCarousel />
+              <Common />
+
             </Suspense>
           </View>
         </div>
-
-        {/* second row */}
-        <div className='relative w-full'>
-        <View className='relative h-96 w-full'>
+        <div className='flex items-center mb-4 sm:mb-8 w-screen h-2/6'> 
+          <p className='font-Poppins text-lg sm:text-xl md:text-2xl text-yellow px-4 sm:px-8 md:px-16 text-center'>
+            In between I worked on Netflix&apos;s &apos;14 Peaks&apos; as a high altitude DP and produced climbing
+            content for Red Bull TV, Epic TV, Montane, Berghaus and Osprey.
+          </p>
+        </div>
+        <div className='relative w-screen'>
+          <View className='w-full h-screen'>
             <Suspense fallback={null}>
               <MotionCarousel route='/blob' scale={2} position={[0, 0, 0]} />
               <Common color={'lightblue'} />
             </Suspense>
           </View>
         </div>
-       
 
-      
+        <div className='flex items-center mb-4 sm:mb-8 w-screen h-screen'>
+        <p className='font-Poppins text-lg sm:text-xl md:text-2xl text-yellow px-4 sm:px-8 md:px-16 text-center w-screen'>
+            In 2018 I filmed the first Afghan woman as she summited Noshaq, the countries highest peak. In 2022 I flew a
+            drone over K2 as the first Pakistani woman reached the top.
+          </p>
+        </div>
 
+        <div className='flex flex-col items-center justify-center h-screen w-screen'> 
+          <div className='h-1/4 w-screen'></div> 
+
+          <div className='h-1/2 grid grid-cols-1 grid-rows-5 place-items-center w-screen'> 
+            <div className='flex items-center col-span-1 row-start-2'>
+              <p className='w-screen text-center text-5xl md:text-6xl font-bold text-syellow'>CONNECT</p>
+            </div>
+            
+            <div className='flex items-center col-span-1 row-start-3 pt-8 md:pt-0 w-screen'>
+              <p className='text-center text-xl md:text-4xl text-syellow px-4 w-screen'>
+                If your story involves mountains or people, I&apos;d love to help tell it.
+              </p>
+            </div>
+
+            <div className='flex items-center col-span-1 row-start-4 w-screen'>
+              <p className='text-center text-xl md:text-4xl font-medium uppercase text-yellow w-screen'>
+                sandro.gromen-hayes@live.com
+              </p>
+            </div>
+            <div className='flex items-center row-start-5 w-screen justify-center'>
+              <Link href='https://www.youtube.com/@SandroGH5' rel='noopener noreferrer' target='_blank'>
+                <Image src='/img/contact/yt.svg' alt='youtube' width={62} height={62} />
+              </Link>
+            </div>
+
+            <div className='flex items-center row-start-5 w-screen justify-center'>
+              <Link href='https://www.instagram.com/sandro.g.h' rel='noopener noreferrer' target='_blank'>
+                <Image src='/img/contact/insta.svg' alt='instagram' width={62} height={62} />
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
-    </>
+    </div> 
   )
 }
