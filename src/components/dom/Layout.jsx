@@ -11,10 +11,12 @@ const Layout = ({ children }) => {
     <div
       ref={ref}
       style={{
-        position: 'relative',
-        width: ' 100%',
-        height: '100%',
-        overflow: 'auto',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
         touchAction: 'auto',
       }}
     >
