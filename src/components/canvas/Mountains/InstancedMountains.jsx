@@ -1,23 +1,18 @@
-import React, { useRef, useMemo, useContext, createContext } from 'react'
+import React, { useRef, useMemo, useContext, createContext, useEffect } from 'react'
 import { useGLTF, Merged } from '@react-three/drei'
 
-
-const context = createContext();
+const context = createContext()
 export function InstancesMountains({ children, ...props }) {
-
-  const { nodes } = useGLTF("/models/mountains.glb");
-
+  const { nodes } = useGLTF('/mountains.glb')
 
   const instances = useMemo(
     () => ({
       EverestDistantHD: nodes.EverestDistant1HD,
-      EverestDistantHD1: nodes.EverestDistant2HD,
-      EverestPeakHD: nodes.EverestPeakHD,
       EverestMidHD: nodes.EverestMidHD,
+      EverestPeakHD: nodes.EverestPeakHD,
     }),
-    [nodes]
-  );
-  console.log("🚀 ~ file: InstancedMountains.jsx:23 ~ InstancesMountains ~ instances:", instances)
+    [nodes],
+  )
 
   return (
     <Merged meshes={instances} {...props}>
@@ -32,30 +27,30 @@ export function InstancesMountains({ children, ...props }) {
 
 
 
-export function InstancedMountains(props) {
+export function InstancedMountains(visible, props) {
   const instances = useContext(context);
-  
+  console.log('InstancedMountains rendering', instances);
+
+  useEffect(() => {
+    console.log("model rendering", instances);
+  }, [instances]);
+
   const group = useRef();
   
   instances.needsUpdate = true
   
   return (
     <group ref={group} dispose={null} {...props}>
-      <group name='Scene'>
+      {visible && (
+        <group name='Scene'>
 
-        <instances.EverestDistantHD
-          name="EverestDistant1HD"
-          position={[-101.24, 48.69, 505.31]}
-        />
-        <instances.EverestDistantHD1
-          name="EverestDistant2HD"
-          position={[-100.5, 67.3, -555.05]}
-        />
-        <instances.EverestPeakHD name="EverestPeakHD" />
+      <instances.EverestDistantHD name="EverestDistant1HD" position={[-101.238, 48.691, 505.312]} />
         <instances.EverestMidHD name="EverestMidHD" />
-      </group>
+        <instances.EverestPeakHD name="EverestPeakHD" />
+        </group>
+      )}
     </group>
   )
 }
 
-useGLTF.preload("/models/mountains.glb");
+useGLTF.preload("/mountains.glb");

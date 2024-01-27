@@ -26,70 +26,71 @@ const Common = dynamic(() => import('@/components/canvas/View').then((mod) => mo
 
 export default function Page() {
   return (
-    <div className='flex flex-col items-center w-screen h-screen overflow-auto justify-start'> 
+    <div></div>
+    // <div className='flex flex-col items-center w-screen h-screen overflow-auto justify-start'> 
       
 
-      <div className='w-screen '> 
+    //   <div className='w-screen '> 
    
-        <div className='relative w-screen py-6'> 
-        <View className='w-full h-48'>
-            <Suspense fallback={null}>
-              <HeroText route='/blob' scale={0.6} position={[0, 0, 0]} rotation={[0,0,0]}/>
-              <Common />
-            </Suspense>
-          </View>
-        </div>
-        <div className='flex items-center w-screen h-24 p-6'> 
-          <p className='font-Poppins text-md text-yellow text-center'>
-          My name is Sandro, I&apos;m a freelance film maker, photographer and part time ski bum.
-          </p>
-        </div>
+    //     <div className='relative w-screen py-6'> 
+    //     <View className='w-full h-48'>
+    //         <Suspense fallback={null}>
+    //           <HeroText route='/blob' scale={0.6} position={[0, 0, 0]} rotation={[0,0,0]}/>
+    //           <Common />
+    //         </Suspense>
+    //       </View>
+    //     </div>
+    //     <div className='flex items-center w-screen h-24 p-6'> 
+    //       <p className='font-Poppins text-md text-yellow text-center'>
+    //       My name is Sandro, I&apos;m a freelance film maker, photographer and part time ski bum.
+    //       </p>
+    //     </div>
 
-        <div className='relative w-screen py-6'> 
-        <View className='w-full h-48'>
-            <Suspense fallback={null}>
-              <StillCarousel />
-              <Common />
+    //     <div className='relative w-screen py-6'> 
+    //     <View className='w-full h-48'>
+    //         <Suspense fallback={null}>
+    //           <StillCarousel />
+    //           <Common />
 
-            </Suspense>
-          </View>
-        </div>
-        <div className='flex items-center w-screen h-24 p-6'> 
-          <p className='font-Poppins text-md text-yellow text-center'>
-          I love people, cameras and mountains and have spent the last decade bringing those passions together.
-          </p>
-        </div>
+    //         </Suspense>
+    //       </View>
+    //     </div>
+    //     <div className='flex items-center w-screen h-24 p-6'> 
+    //       <p className='font-Poppins text-md text-yellow text-center'>
+    //       I love people, cameras and mountains and have spent the last decade bringing those passions together.
+    //       </p>
+    //     </div>
 
-        <div className='relative w-screen py-6'>
-          <View className='w-full h-48'>
-            <Suspense fallback={null}>
-              <MotionCarousel scale={2} position={[0, 0, 0]} />
-              <Common color={'lightblue'} />
-            </Suspense>
-          </View>
-        </div>
+    //     <div className='relative w-screen py-6'>
+    //       <View className='w-full h-48'>
+    //         <Suspense fallback={null}>
+    //           <MotionCarousel scale={2} position={[0, 0, 0]} />
+    //           <Common color={'lightblue'} />
+    //         </Suspense>
+    //       </View>
+    //     </div>
 
-        <div className='flex items-center w-screen h-24 p-6'>
-        <p className='font-Poppins text-md text-yellow text-center w-screen'>
-            Previous clients include: <br/>
-            Red Bull TV, Epic TV, Montane, Berghaus, Osprey and North Face
-          </p>
-        </div>
+    //     <div className='flex items-center w-screen h-24 p-6'>
+    //     <p className='font-Poppins text-md text-yellow text-center w-screen'>
+    //         Previous clients include: <br/>
+    //         Red Bull TV, Epic TV, Montane, Berghaus, Osprey and North Face
+    //       </p>
+    //     </div>
 
-        <div className='flex flex-col items-center justify-center h-24 w-screen p-6 bg-black'> 
+    //     <div className='flex flex-col items-center justify-center h-24 w-screen p-6 bg-black'> 
         
                         
-            <div className='flex items-center w-screen'>
-              <p className='text-center text-md text-yellow px-4 w-screen'>
-                If your story involves mountains or people, I&apos;d love to help tell it. <br/>
-                sandro.gromen-hayes@live.com
-              </p>
-            </div>
+    //         <div className='flex items-center w-screen'>
+    //           <p className='text-center text-md text-yellow px-4 w-screen'>
+    //             If your story involves mountains or people, I&apos;d love to help tell it. <br/>
+    //             sandro.gromen-hayes@live.com
+    //           </p>
+    //         </div>
 
   
           
-        </div>
-      </div>
-    </div> 
+    //     </div>
+    //   </div>
+    // </div> 
   )
 }
