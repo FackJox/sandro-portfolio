@@ -1,3 +1,4 @@
+'use client'
 import React, { Suspense, useRef, useState, useEffect } from "react";
 import { useFrame } from '@react-three/fiber';
 import { useVideoTexture } from '@react-three/drei';

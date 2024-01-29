@@ -1,15 +1,17 @@
 'use client'
 
 import { Canvas } from '@react-three/fiber'
-import { Preload, AdaptiveDpr, useGLTF } from '@react-three/drei'
+import { Preload, AdaptiveDpr, useGLTF, PerspectiveCamera, OrbitControls } from '@react-three/drei'
 import { r3f } from '@/helpers/global'
 import * as THREE from 'three'
+import dynamic from 'next/dynamic'
 import { useState, useEffect, useRef, Suspense } from 'react'
-
-import Sky from '@/components/canvas/Sky/Sky'
-import Mountains from '@/components/canvas/Mountains/Mountains'
-import { InstancedMountains, InstancesMountains } from '@/components/canvas/Mountains/InstancedMountains'
 import { EffectComposer, DepthOfField } from '@react-three/postprocessing'
+
+const Sky = dynamic(() => import('@/components/canvas/Sky/Sky'), { ssr: false })
+const Mountains = dynamic(() => import('@/components/canvas/Mountains/Mountains'), { ssr: false })
+const InstancedMountains = dynamic(() => import('@/components/canvas/Mountains/InstancedMountains').then((mod) => mod.InstancedMountains), { ssr: false })
+const InstancesMountains = dynamic(() => import('@/components/canvas/Mountains/InstancedMountains').then((mod) => mod.InstancesMountains), { ssr: false })
 
 export default function Scene({ ...props }) {
   const [modelLoaded, setModelLoaded] = useState(false);
@@ -27,21 +29,20 @@ export default function Scene({ ...props }) {
   }, [modelLoaded]);
 
   const scalingParams = {
-    scaleY: 1,
+    scaleY: 5,
     scaleXZ: 4.3,
     posMult: 2.4,
   }
- 
-  // Everything defined in here will persist between route changes, only children are swapped
+  const cameraRef = useRef();
+
   const canvasRef = useRef()
   return (
     <Canvas ref={canvasRef}
       onCreated={(state) => (state.gl.toneMapping = THREE.AgXToneMapping)}
     >
-      {/* @ts-ignore */}
       <r3f.Out />
       <AdaptiveDpr pixelated />
-
+      <Sky />
       <EffectComposer>
         <DepthOfField
           focusDistance={0.9} // where to focus
@@ -49,102 +50,112 @@ export default function Scene({ ...props }) {
           bokehScale={6} // bokeh size
         />
       </EffectComposer>
-      <Sky />
+      <Mountains />
+      <group position={[0, -250, 0]}>
+        <mesh
+          position={[0, -50, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <planeGeometry attach="geometry" args={[103500, 103500]} />
+          <meshStandardMaterial attach="material" color="black" />
+        </mesh>
 
-      <group position={[0, -100, 0]}>
-        <Mountains />
         <Suspense fallback={null}>
         <InstancesMountains>
-    
           <InstancedMountains
             key='top'
             visible={modelLoaded}
-            position={[1484 * scalingParams.posMult, 0, 0]}
+            position={[2500 * scalingParams.posMult, 0, 0]}
             rotation={[0, (180 * Math.PI) / 180, 0]}
-            scale={[scalingParams.scaleXZ, scalingParams.scaleY, -scalingParams.scaleXZ]}
-            castShadows={false}
-            recieveShadows={false}
+            scale={[scalingParams.scaleXZ, scalingParams.scaleY, scalingParams.scaleXZ]}
+            castShadows={true}
+            recieveShadows={true}
             />
-          <InstancedMountains
+           
+         <InstancedMountains
             key='bottom'
             visible={modelLoaded}
 
-            position={[-1893.5 * scalingParams.posMult, 0, 0]}
+            position={[-2800 * scalingParams.posMult, 0, 0]}
             rotation={[0, (180 * Math.PI) / 180, 0]}
-            scale={[scalingParams.scaleXZ, scalingParams.scaleY, -scalingParams.scaleXZ]}
-            castShadows={false}
-            recieveShadows={false}
+            scale={[scalingParams.scaleXZ, scalingParams.scaleY, scalingParams.scaleXZ]}
+            castShadows={true}
+            recieveShadows={true}
             />
 
           <InstancedMountains
             key='left'
             visible={modelLoaded}
 
-            position={[0, 0, -1848.5 * scalingParams.posMult]}
+            position={[0, 0, -3200 * scalingParams.posMult]}
             rotation={[0, (180 * Math.PI) / 180, 0]}
-            scale={[-scalingParams.scaleXZ, scalingParams.scaleY, scalingParams.scaleXZ]}
-            castShadows={false}
-            recieveShadows={false}
+            scale={[scalingParams.scaleXZ, scalingParams.scaleY, scalingParams.scaleXZ]}
+            castShadows={true}
+            recieveShadows={true}
             />
+            
           <InstancedMountains
             key='right'
             visible={modelLoaded}
 
-            position={[0, 0, 2011 * scalingParams.posMult]}
+            position={[0, 0, 3400 * scalingParams.posMult]}
             rotation={[0, (180 * Math.PI) / 180, 0]}
-            scale={[-scalingParams.scaleXZ, scalingParams.scaleY, scalingParams.scaleXZ]}
-            castShadows={false}
-            recieveShadows={false}
-            />
+            scale={[scalingParams.scaleXZ, scalingParams.scaleY, scalingParams.scaleXZ]}
+            castShadows={true}
+            recieveShadows={true}
+            /> 
 
+        
           <InstancedMountains
             key='topleft'
             visible={modelLoaded}
 
-            position={[1484 * scalingParams.posMult, 0, -1848.5 * scalingParams.posMult]}
+            position={[2800 * scalingParams.posMult, 0, -3200 * scalingParams.posMult]}
             rotation={[0, 0, 0]}
-            scale={[-scalingParams.scaleXZ, scalingParams.scaleY, -scalingParams.scaleXZ]}
-            castShadows={false}
-            recieveShadows={false}
+            scale={[scalingParams.scaleXZ, scalingParams.scaleY, scalingParams.scaleXZ]}
+            castShadows={true}
+            recieveShadows={true}
             />
+
           <InstancedMountains
             key='topright'
             visible={modelLoaded}
 
-            position={[1484 * scalingParams.posMult, 0, 2011 * scalingParams.posMult]}
+            position={[2800 * scalingParams.posMult, 0, 3300 * scalingParams.posMult]}
             rotation={[0, 0, 0]}
-            scale={[-scalingParams.scaleXZ, scalingParams.scaleY, -scalingParams.scaleXZ]}
-            castShadows={false}
-            recieveShadows={false}
+            scale={[scalingParams.scaleXZ, scalingParams.scaleY, scalingParams.scaleXZ]}
+            castShadows={true}
+            recieveShadows={true}
             />
 
           <InstancedMountains
             key='bottomleft'
             visible={modelLoaded}
 
-            position={[-1893.5 * scalingParams.posMult, 0, -1848.5 * scalingParams.posMult]}
+            position={[-2600 * scalingParams.posMult, 0, -3000 * scalingParams.posMult]}
             rotation={[0, 0, 0]}
-            scale={[-scalingParams.scaleXZ, scalingParams.scaleY, -scalingParams.scaleXZ]}
-            castShadows={false}
-            recieveShadows={false}
-            />
+            scale={[scalingParams.scaleXZ, scalingParams.scaleY, scalingParams.scaleXZ]}
+            castShadows={true}
+            recieveShadows={true}
+            />  
           <InstancedMountains
             key='bottomright'
             visible={modelLoaded}
 
-            position={[-1893.5 * scalingParams.posMult, 0, 2011 * scalingParams.posMult]}
+            position={[-2000 * scalingParams.posMult, 0, 3200* scalingParams.posMult]}
             rotation={[0, 0, 0]}
-            scale={[-scalingParams.scaleXZ, scalingParams.scaleY, -scalingParams.scaleXZ]}
-            castShadows={false}
-            recieveShadows={false}
-            /> 
-               
+            scale={[scalingParams.scaleXZ, scalingParams.scaleY, scalingParams.scaleXZ]}
+            castShadows={true}
+            recieveShadows={true}
+            />  
+
+
+                
         </InstancesMountains>
         
         </Suspense>
-        </group>
-        <Preload all />
-        </Canvas>
-        )
-      }
-      
+      </group>
+      <Preload all />
+    </Canvas>
+  )
+}

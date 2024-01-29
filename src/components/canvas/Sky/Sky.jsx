@@ -1,3 +1,4 @@
+'use client'
 import React, { useState, useRef, useEffect } from 'react'
 import { Sky as DaySky } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
@@ -87,7 +88,7 @@ export default function Sky() {
   return (
     <>
       <directionalLight intensity={0.2} position={sunPosition} />
-      {/* <fogExp2 attach='fog' color={fogColour} density={0.0035} /> */}
+      <fogExp2 attach='fog' color={fogColour} density={0.0020} />
       {showNightSky && <NightSky />}
       <DaySky
         azimuth={0.25}

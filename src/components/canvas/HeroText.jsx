@@ -1,3 +1,4 @@
+'use client'
 import { useLoader, extend, useFrame } from '@react-three/fiber'
 import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'

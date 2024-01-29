@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useMemo, useRef } from 'react'
 import { useThree } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
