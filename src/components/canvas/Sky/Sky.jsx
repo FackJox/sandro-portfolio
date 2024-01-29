@@ -88,7 +88,7 @@ export default function Sky() {
   return (
     <>
       <directionalLight intensity={0.2} position={sunPosition} />
-      <fogExp2 attach='fog' color={fogColour} density={0.0020} />
+      <fogExp2 attach='fog' color={fogColour} density={0.0016} />
       {showNightSky && <NightSky />}
       <DaySky
         azimuth={0.25}

@@ -67,9 +67,12 @@ export default function Mountains(props) {
         <mesh name="EverestDistant1HD" geometry={nodes.EverestDistant1HD.geometry} material={new THREE.MeshBasicMaterial({color: 'red', transparent: true, opacity: 0.9})} position={[-101.238, 48.691, 505.312]} />
         <mesh name="EverestMidHD" geometry={nodes.EverestMidHD.geometry} material={new THREE.MeshBasicMaterial({color: 'red', transparent: true, opacity: 0.9})} />
         <mesh name="EverestPeakHD" geometry={nodes.EverestPeakHD.geometry} material={new THREE.MeshBasicMaterial({color: 'red', transparent: true, opacity: 0.9})} /> */}
-        <mesh name="EverestDistant1HD" geometry={nodes.EverestDistant1HD.geometry} material={materials.DistantMountainMat} position={[-101.238, 48.691, 505.312]} />
-        <mesh name="EverestMidHD" geometry={nodes.EverestMidHD.geometry} material={materials.MidMountainMat} />
-        <mesh name="EverestPeakHD" geometry={nodes.EverestPeakHD.geometry} material={materials.PeakMountainMat} />
+        <mesh name="EverestDistant1HD" geometry={nodes.EverestDistant1HD.geometry} material={materials.DistantMountainMat} position={[-101.238, 48.691, 505.312]}         castShadows={true}
+            recieveShadows={true}/>
+        <mesh name="EverestMidHD" geometry={nodes.EverestMidHD.geometry} material={materials.MidMountainMat}         castShadows={true}
+            recieveShadows={true}/>
+        <mesh name="EverestPeakHD" geometry={nodes.EverestPeakHD.geometry} material={materials.PeakMountainMat}        castShadows={true}
+            recieveShadows={true} />
       </group>
     </group>
   )
