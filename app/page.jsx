@@ -26,62 +26,63 @@ const Common = dynamic(() => import('@/components/canvas/View').then((mod) => mo
 
 export default function Page() {
   return (
-    <div></div>
-    // <div className='flex flex-col items-center w-screen h-screen overflow-auto justify-start'> 
-      
-
-    //   <div className='w-screen '> 
+    
+   <></>
    
-    //     <div className='relative w-screen py-6'> 
-    //     <View className='w-full h-48'>
+    // <div className='flex flex-col items-center w-screen h-screen overflow-auto justify-start bg-transparent'> 
+
+    //    <div className='w-screen bg-transparent'> 
+   
+    //     <div className='relative w-screen py-6 bg-transparent'> 
+    //     <View className='w-full h-48 bg-transparent'>
     //         <Suspense fallback={null}>
     //           <HeroText route='/blob' scale={0.6} position={[0, 0, 0]} rotation={[0,0,0]}/>
-    //           <Common />
+    //           <Common color={['lightblue', 0]} />
     //         </Suspense>
     //       </View>
     //     </div>
-    //     <div className='flex items-center w-screen h-24 p-6'> 
-    //       <p className='font-Poppins text-md text-yellow text-center'>
+    //     <div className='flex items-center w-screen h-24 p-6 bg-transparent'> 
+    //       <p className='font-Poppins text-md text-yellow text-center bg-transparent'>
     //       My name is Sandro, I&apos;m a freelance film maker, photographer and part time ski bum.
     //       </p>
     //     </div>
 
-    //     <div className='relative w-screen py-6'> 
-    //     <View className='w-full h-48'>
+    //     <div className='relative w-screen py-6 bg-transparent'> 
+    //     <View className='w-full h-48 bg-transparent'>
     //         <Suspense fallback={null}>
     //           <StillCarousel />
-    //           <Common />
+    //           <Common color={['lightblue', 0]} />
 
     //         </Suspense>
     //       </View>
     //     </div>
-    //     <div className='flex items-center w-screen h-24 p-6'> 
-    //       <p className='font-Poppins text-md text-yellow text-center'>
+    //     <div className='flex items-center w-screen h-24 p-6 bg-transparent'> 
+    //       <p className='font-Poppins text-md text-yellow text-center bg-transparent'>
     //       I love people, cameras and mountains and have spent the last decade bringing those passions together.
     //       </p>
     //     </div>
 
-    //     <div className='relative w-screen py-6'>
-    //       <View className='w-full h-48'>
+    //     <div className='relative w-screen py-6 bg-transparent'>
+    //       <View className='w-full h-48 bg-transparent'>
     //         <Suspense fallback={null}>
     //           <MotionCarousel scale={2} position={[0, 0, 0]} />
-    //           <Common color={'lightblue'} />
+    //           <Common color={['lightblue', 0]} />
     //         </Suspense>
     //       </View>
     //     </div>
 
-    //     <div className='flex items-center w-screen h-24 p-6'>
-    //     <p className='font-Poppins text-md text-yellow text-center w-screen'>
+    //     <div className='flex items-center w-screen h-24 p-6 bg-transparent'>
+    //     <p className='font-Poppins text-md text-yellow text-center w-screen bg-transparent'>
     //         Previous clients include: <br/>
     //         Red Bull TV, Epic TV, Montane, Berghaus, Osprey and North Face
     //       </p>
     //     </div>
 
-    //     <div className='flex flex-col items-center justify-center h-24 w-screen p-6 bg-black'> 
+    //     <div className='flex flex-col items-center justify-center h-24 w-screen p-6 bg-transparent'> 
         
                         
-    //         <div className='flex items-center w-screen'>
-    //           <p className='text-center text-md text-yellow px-4 w-screen'>
+    //         <div className='flex items-center w-screen bg-transparent'>
+    //           <p className='text-center text-md text-yellow px-4 w-screen bg-transparent'>
     //             If your story involves mountains or people, I&apos;d love to help tell it. <br/>
     //             sandro.gromen-hayes@live.com
     //           </p>
@@ -90,7 +91,7 @@ export default function Page() {
   
           
     //     </div>
-    //   </div>
-    // </div> 
+    //   </div> 
+    // </div>  
   )
 }
