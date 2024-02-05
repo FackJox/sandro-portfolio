@@ -45,18 +45,20 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    /* background-color: #1517a5; */
+    background-color: transparent;
+
   }
 }
 
 /* .canvas {
   pointer-events: none;
-  position: absolute !important;
-  top: 0px;
-  left: 0px;
-  width: 100vw;
-  height: 100vh;
+  position: fixed !important;
+  top: 0px !important;
+  left: 0px !important;
+  width: 100vw !important;
+  height: 100vh !important;
 } */
+
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
@@ -67,3 +69,4 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+

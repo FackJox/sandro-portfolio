@@ -7,6 +7,13 @@ import { Suspense } from 'react'
 const StillCarousel = dynamic(() => import('@/components/canvas/StillCarousel'), { ssr: false })
 const HeroText = dynamic(() => import('@/components/canvas/HeroText'), { ssr: false })
 const MotionCarousel = dynamic(() => import('@/components/canvas/MotionCarousel'), { ssr: false })
+const Sky = dynamic(() => import('@/components/canvas/Sky/Sky'), { ssr: false })
+const Mountains = dynamic(() => import('@/components/canvas/Mountains/Mountains'), { ssr: false })
+
+
+
+
+
 const View = dynamic(() => import('@/components/canvas/View').then((mod) => mod.View), {
   ssr: false,
   loading: () => (
@@ -26,72 +33,87 @@ const Common = dynamic(() => import('@/components/canvas/View').then((mod) => mo
 
 export default function Page() {
   return (
-    
-   <></>
-   
-    // <div className='flex flex-col items-center w-screen h-screen overflow-auto justify-start bg-transparent'> 
+    <>
+      <div className="fixed top-0 left-0 w-screen h-screen z-40">
+      
+        <View className="w-full h-full">
+          < Suspense fallback={null} >
+            <Sky />
+            <Mountains />
+            <Common color={['lightblue', 0]} />
 
-    //    <div className='w-screen bg-transparent'> 
-   
-    //     <div className='relative w-screen py-6 bg-transparent'> 
-    //     <View className='w-full h-48 bg-transparent'>
-    //         <Suspense fallback={null}>
-    //           <HeroText route='/blob' scale={0.6} position={[0, 0, 0]} rotation={[0,0,0]}/>
-    //           <Common color={['lightblue', 0]} />
-    //         </Suspense>
-    //       </View>
-    //     </div>
-    //     <div className='flex items-center w-screen h-24 p-6 bg-transparent'> 
-    //       <p className='font-Poppins text-md text-yellow text-center bg-transparent'>
-    //       My name is Sandro, I&apos;m a freelance film maker, photographer and part time ski bum.
-    //       </p>
-    //     </div>
+          </Suspense >
+        </View>
+      </div>
 
-    //     <div className='relative w-screen py-6 bg-transparent'> 
-    //     <View className='w-full h-48 bg-transparent'>
-    //         <Suspense fallback={null}>
-    //           <StillCarousel />
-    //           <Common color={['lightblue', 0]} />
+      <div className='fixed top-0 left-0 w-screen h-full z-50 overflow-auto'>
 
-    //         </Suspense>
-    //       </View>
-    //     </div>
-    //     <div className='flex items-center w-screen h-24 p-6 bg-transparent'> 
-    //       <p className='font-Poppins text-md text-yellow text-center bg-transparent'>
-    //       I love people, cameras and mountains and have spent the last decade bringing those passions together.
-    //       </p>
-    //     </div>
+        <div className='flex flex-col items-center  justify-start w-screen bg-transparent z-50'>
+     
 
-    //     <div className='relative w-screen py-6 bg-transparent'>
-    //       <View className='w-full h-48 bg-transparent'>
-    //         <Suspense fallback={null}>
-    //           <MotionCarousel scale={2} position={[0, 0, 0]} />
-    //           <Common color={['lightblue', 0]} />
-    //         </Suspense>
-    //       </View>
-    //     </div>
+        <div className='flex relative w-full h-96 py-6 bg-transparent z-50'>
+            <View className="w-full h-full">
+        <Suspense fallback={null}>
+        <HeroText route='/blob' scale={0.6} position={[0, 0, 0]} rotation={[0,0,0]}/>
+        <Common color={['lightblue', 0]} />
+        </Suspense>
+        </View>
+        </div>
 
-    //     <div className='flex items-center w-screen h-24 p-6 bg-transparent'>
-    //     <p className='font-Poppins text-md text-yellow text-center w-screen bg-transparent'>
-    //         Previous clients include: <br/>
-    //         Red Bull TV, Epic TV, Montane, Berghaus, Osprey and North Face
-    //       </p>
-    //     </div>
+         
 
-    //     <div className='flex flex-col items-center justify-center h-24 w-screen p-6 bg-transparent'> 
-        
-                        
-    //         <div className='flex items-center w-screen bg-transparent'>
-    //           <p className='text-center text-md text-yellow px-4 w-screen bg-transparent'>
-    //             If your story involves mountains or people, I&apos;d love to help tell it. <br/>
-    //             sandro.gromen-hayes@live.com
-    //           </p>
-    //         </div>
+          <div className='flex items-center w-screen h-96 p-6 bg-transparent z-50'>
+        <p className='font-Poppins text-md text-yellow text-center bg-transparent z-50'>
+        My name is Sandro, I&apos;m a freelance film maker, photographer and part time ski bum.
+        </p>
+        </div>
+         
+          <div className='flex relative w-full h-96 py-6 bg-transparent z-50'>
+        <View className='w-full h-full bg-transparent'>
+        <Suspense fallback={null}>
+        <StillCarousel />
+        <Common color={['lightblue', 0]} />
 
-  
+            </Suspense>
+          </View>
+          </div>
           
-    //     </div>
-    //   </div> 
-    // </div>  
+
+          <div className='flex items-center w-screen h-96 p-6 bg-transparent z-50'>
+          <p className='font-Poppins text-md text-yellow text-center bg-transparent z-50'>
+          I love people, cameras and mountains and have spent the last decade bringing those passions together.
+          </p>
+          </div>
+
+          <div className='flex relative w-full h-96 py-6 bg-transparent z-50'>
+          <View className='w-full h-full' >
+          <Suspense fallback={null}>
+          <MotionCarousel scale={2} position={[0, 0, 0]} />
+          <Common color={['lightblue', 0]} />
+          </Suspense>
+          </View>
+          </div>
+
+        <div className='flex items-center w-screen h-96 p-6 bg-transparent z-50'>
+        <p className='font-Poppins text-md text-yellow text-center w-screen bg-transparent z-50'>
+            Previous clients include: <br/>
+            Red Bull TV, Epic TV, Montane, Berghaus, Osprey and North Face
+          </p>
+        </div>
+
+      
+        <div className='flex flex-col items-center justify-center h-96 w-screen p-6 bg-transparent z-50'>
+            <div className='flex items-center w-screen bg-transparent z-50'>
+              <p className='text-center text-md text-yellow px-4 w-screen bg-transparent z-50'>
+                If your story involves mountains or people, I&apos;d love to help tell it. <br/>
+                sandro.gromen-hayes@live.com
+              </p>
+            </div>
+        </div>
+
+
+      </div> 
+    </div>  
+    </>
   )
 }

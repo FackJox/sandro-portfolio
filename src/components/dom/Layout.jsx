@@ -18,6 +18,7 @@ const Layout = ({ children }) => {
         height: '100vh',
         overflow: 'hidden',
         touchAction: 'auto',
+        background: 'transparent',
       }}
     >
       {children}
@@ -26,7 +27,7 @@ const Layout = ({ children }) => {
           position: 'fixed',
           top: 0,
           left: 0,
-          zIndex: -10,
+          background: 'blue',
           width: '100vw',
           height: '100vh',
           pointerEvents: 'none',
