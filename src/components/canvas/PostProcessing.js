@@ -13,7 +13,7 @@ const PostProcessing = forwardRef((_, ref) => {
       <planeGeometry args={[viewport.width, viewport.height]} />
       <MeshTransmissionMaterial
         ref={ref}
-        background={new Color('white')}
+        // background={new Color('white')}
         transmission={0.7}
         roughness={0}
         thickness={0}

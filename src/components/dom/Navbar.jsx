@@ -7,7 +7,7 @@ export function Navbar() {
   return (
     <>
       <nav className='fixed z-50 flex items-center h-10 md:h-14 justify-between w-full no-underline bg-black select-none'>
-        <div className='ml-3 md:ml-6 flex pb-2 items-center justify-center'>
+        <div className='ml-3 md:ml-6 flex items-center h-5 justify-center'>
           <Link href='/' className=''>
             <p className='text-2xl md:text-3xl font-bold text-gold'>sandro gh</p>
           </Link>

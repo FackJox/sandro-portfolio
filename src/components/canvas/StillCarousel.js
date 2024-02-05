@@ -12,9 +12,9 @@ import PostProcessing from './PostProcessing'
 Plane Settings
 ------------------------------*/
 const planeSettings = {
-  width: 1,
-  height: 2.5,
-  gap: 0.1
+  width: 2.5,
+  height: 5,
+  gap: 0.5
 }
 
 /*------------------------------
@@ -28,7 +28,7 @@ gsap.defaults({
 /*------------------------------
 Carousel
 ------------------------------*/
-const StillCarousel = () => {
+const StillCarousel = (props) => {
   const [$root, setRoot] = useState()
   const $post = useRef()
 
@@ -36,6 +36,8 @@ const StillCarousel = () => {
   const prevActivePlane = usePrevious(activePlane)
   const { viewport } = useThree()
 
+
+ 
   /*--------------------
   Vars
   --------------------*/
@@ -136,6 +138,7 @@ const StillCarousel = () => {
     return (
       <mesh
         position={[0, 0, -0.01]}
+        
         onWheel={handleWheel}
         onPointerDown={handleDown}
         onPointerUp={handleUp}
@@ -144,7 +147,7 @@ const StillCarousel = () => {
         onPointerCancel={handleUp}
       >
         <planeGeometry args={[viewport.width, viewport.height]} />
-        <meshBasicMaterial transparent={true} opacity={0} />
+         <meshStandardMaterial transparent={true} opacity={0.1} />      
       </mesh>
     )
   }
@@ -171,7 +174,7 @@ const StillCarousel = () => {
   }
 
   return (
-    <group>
+    <group {...props}>
       {renderPlaneEvents()}
       {renderSlider()}
       <PostProcessing ref={$post} />

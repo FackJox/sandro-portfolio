@@ -13,15 +13,17 @@ const InstancesMountains = dynamic(() => import('@/components/canvas/Mountains/I
 
 
 
-export default function Mountains(props) {
+export default function Mountains({ scroll }, props) {
   const group = useRef()
+  const actionSlider = scroll;
   
   const { nodes, materials, animations } = useGLTF('/mountains.glb');
 
   const { actions } = useAnimations(animations, group)
   const [actionProgress, setActionProgress] = useState(0)
   const { camera } = useThree()
-  const { actionSlider } = useControls({ actionSlider: { value: 71, min: 0, max: 100, step: 1 } })
+  // const { actionSlider } = useControls({ actionSlider: { value: 71, min: 0, max: 100, step: 1 } })
+
 
   const scalingParams = {
     scaleY: 5,

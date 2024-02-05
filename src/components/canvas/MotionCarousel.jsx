@@ -41,7 +41,7 @@ export function CylinderSplit({ VideoSrc, rotation, position, ...props }) {
   );
 }
 
-export default function MotionCarousel() {
+export default function MotionCarousel(props) {
   const groupRef = useRef();
   const [activeSegment, setActiveSegment] = useState(0);
   const isDown = useRef(false);
@@ -123,7 +123,7 @@ export default function MotionCarousel() {
         near={0.001}
         position={[0, 0, 0]}
       /> */}
-      <group ref={groupRef}>
+      <group ref={groupRef} {...props}>
       <React.Suspense fallback={<meshBasicMaterial wireframe />}>
  
 
