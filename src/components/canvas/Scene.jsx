@@ -18,11 +18,12 @@ export default function Scene({ ...props }) {
   return (
     <Canvas ref={canvasRef}
       onCreated={({ gl }) => {
-        gl.toneMapping = THREE.AgXToneMapping
+        gl.toneMapping = THREE.LinearToneMapping
         gl.setClearColor(new THREE.Color(0x000000), 0);
         gl.autoClear = true;
         gl.clearDepth();
       }}
+      // flat
       className="canvas"
       dpr={window.devicePixelRatio}
       gl={{ alpha: true }}

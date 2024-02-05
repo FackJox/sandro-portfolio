@@ -164,7 +164,7 @@ export default function Page() {
             >
             <View className='w-full h-full' >
               <Suspense fallback={null}>
-                <MotionCarousel scale={1} position={[0, 0, 2.5]} />
+                <MotionCarousel scale={1} position={[0, -0.2, 2.4]} />
                 <Common color={['lightblue', 0]} />
               </Suspense>
             </View>

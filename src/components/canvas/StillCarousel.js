@@ -180,12 +180,6 @@ const StillCarousel = (props) => {
       </mesh>
     )
   }
-  const rootRefHandler = (node) => {
-    if (node !== null) {
-      console.log('Root set:', node);
-      setRoot(node); // This is the original setRoot from useState
-    }
-  };
 
   
   /*--------------------
