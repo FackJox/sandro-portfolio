@@ -36,7 +36,45 @@ const StillCarousel = (props) => {
   const prevActivePlane = usePrevious(activePlane)
   const { viewport } = useThree()
 
+  useEffect(() => {
+    const handleMouseDown = (event) => {
 
+      handleDown(event.detail);
+    };
+    const handleMouseUp = (event) => {
+
+      handleUp();
+    };
+    const handleMouseMove = (event) => {
+
+      handleMove(event.detail);
+    };
+    const handleTouchStart = (event) => {
+      handleDown(event.detail);
+    };
+    const handleTouchEnd = (event) => {
+      handleUp();
+    };
+    const handleTouchMove = (event) => {
+      handleMove(event.detail);
+    };
+
+    document.addEventListener('stillcarousel:mousedown', handleMouseDown);
+    document.addEventListener('stillcarousel:mouseup', handleMouseUp);
+    document.addEventListener('stillcarousel:mousemove', handleMouseMove);
+    document.addEventListener('stillcarousel:touchstart', handleTouchStart);
+    document.addEventListener('stillcarousel:touchend', handleTouchEnd);
+    document.addEventListener('stillcarousel:touchmove', handleTouchMove);
+
+    return () => {
+      document.removeEventListener('stillcarousel:mousedown', handleMouseDown);
+      document.removeEventListener('stillcarousel:mouseup', handleMouseUp);
+      document.removeEventListener('stillcarousel:mousemove', handleMouseMove);
+      document.removeEventListener('stillcarousel:touchstart', handleTouchStart);
+      document.removeEventListener('stillcarousel:touchend', handleTouchEnd);
+      document.removeEventListener('stillcarousel:touchmove', handleTouchMove);
+    };
+  }, []);
  
   /*--------------------
   Vars
@@ -44,7 +82,6 @@ const StillCarousel = (props) => {
   const progress = useRef(0)
   const startX = useRef(0)
   const isDown = useRef(false)
-  const speedWheel = 0.02
   const speedDrag = -0.3
   const oldProgress = useRef(0)
   const speed = useRef(0)
@@ -67,6 +104,7 @@ const StillCarousel = (props) => {
   RAF
   --------------------*/
   useFrame(() => {
+
     progress.current = Math.max(0, Math.min(progress.current, 100))
 
     const active = Math.floor((progress.current / 100) * ($items.length - 1))
@@ -84,15 +122,6 @@ const StillCarousel = (props) => {
     }
   })
 
-  /*--------------------
-  Handle Wheel
-  --------------------*/
-  const handleWheel = (e) => {
-    if (activePlane !== null) return
-    const isVerticalScroll = Math.abs(e.deltaY) > Math.abs(e.deltaX)
-    const wheelProgress = isVerticalScroll ? e.deltaY : e.deltaX
-    progress.current = progress.current + wheelProgress * speedWheel
-  }
 
   /*--------------------
   Handle Down
@@ -119,6 +148,7 @@ const StillCarousel = (props) => {
     const mouseProgress = (x - startX.current) * speedDrag
     progress.current = progress.current + mouseProgress
     startX.current = x
+    
   }
 
   /*--------------------
@@ -139,7 +169,6 @@ const StillCarousel = (props) => {
       <mesh
         position={[0, 0, -0.01]}
         
-        onWheel={handleWheel}
         onPointerDown={handleDown}
         onPointerUp={handleUp}
         onPointerMove={handleMove}
@@ -147,11 +176,18 @@ const StillCarousel = (props) => {
         onPointerCancel={handleUp}
       >
         <planeGeometry args={[viewport.width, viewport.height]} />
-         <meshStandardMaterial transparent={true} opacity={0.1} />      
+         <meshStandardMaterial transparent={true} opacity={0} />      
       </mesh>
     )
   }
+  const rootRefHandler = (node) => {
+    if (node !== null) {
+      console.log('Root set:', node);
+      setRoot(node); // This is the original setRoot from useState
+    }
+  };
 
+  
   /*--------------------
   Render Slider
   --------------------*/
@@ -177,7 +213,7 @@ const StillCarousel = (props) => {
     <group {...props}>
       {renderPlaneEvents()}
       {renderSlider()}
-      <PostProcessing ref={$post} />
+      {/* <PostProcessing ref={$post} /> */}
     </group>
   )
 }

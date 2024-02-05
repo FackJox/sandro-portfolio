@@ -1,53 +1,57 @@
-'use client'
-import React, { Suspense, useRef, useState, useEffect } from "react";
-import { useFrame } from '@react-three/fiber';
-import { useVideoTexture } from '@react-three/drei';
-import gsap from 'gsap';
+// https://cydstumpel.nl/
 
-const drei = '/drei.webm';
-const matrixShort = '/matrixShort.webm';
-const galaxyShort = '/galaxyShort.webm';
-
-const NUMBER_OF_SEGMENTS = 5;
-const PLANE_WIDTH = 1; // Assuming a plane width similar to StillCarousel
-const PLANE_GAP = 0.1; // Assuming a gap similar to StillCarousel
+import * as THREE from 'three'
+import { useRef, useState, useEffect } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { Image } from '@react-three/drei'
+import { easing } from 'maath'
+import '../../helpers/utils'
 
 
-export function CylinderSplit({ VideoSrc, rotation, position, ...props }) {
-    let texture;
-    if (typeof window !== 'undefined') {
-      texture = useVideoTexture(VideoSrc, {
-        start: true, // Add this line
-        muted: true, // Mute the video before it's loaded
-      });
-    }
+function Rig(props) {
+  const ref = useRef()
+  const isDown = useRef(false)
+  const startX = useRef(0)
+  const progress = useRef(0)
+  const speedDrag = 0.01
 
-  const thetaLength = (2 * Math.PI) / NUMBER_OF_SEGMENTS;
-  const height = (1024 / 720) / thetaLength * 1.07;
 
-  const cylinderArgs = [2, 2, height, 16, 1, 1, 1, thetaLength];
+  useEffect(() => {
+    const handleMouseDown = (event) => {
+      handleDown(event.detail);
+    };
+    const handleMouseUp = (event) => {
+      handleUp();
+    };
+    const handleMouseMove = (event) => {
+      handleMove(event.detail);
+    };
+    const handleTouchStart = (event) => {
+      handleDown(event.detail);
+    };
+    const handleTouchEnd = (event) => {
+      handleUp();
+    };
+    const handleTouchMove = (event) => {
+      handleMove(event.detail);
+    };
 
-  return (
-    <mesh position={[0, 0, 0]} rotation={rotation} >
-      <cylinderGeometry
-        attach="geometry"
-        args={cylinderArgs}
-      />
-      <Suspense fallback={<meshBasicMaterial wireframe />}>
+    document.addEventListener('motioncarousel:mousedown', handleMouseDown);
+    document.addEventListener('motioncarousel:mouseup', handleMouseUp);
+    document.addEventListener('motioncarousel:mousemove', handleMouseMove);
+    document.addEventListener('motioncarousel:touchstart', handleTouchStart);
+    document.addEventListener('motioncarousel:touchend', handleTouchEnd);
+    document.addEventListener('motioncarousel:touchmove', handleTouchMove);
 
-      <meshBasicMaterial map={texture ? texture : undefined} toneMapped={false} />
-      </Suspense>
-    </mesh>
-  );
-}
-
-export default function MotionCarousel(props) {
-  const groupRef = useRef();
-  const [activeSegment, setActiveSegment] = useState(0);
-  const isDown = useRef(false);
-  const startX = useRef(0);
-  const progress = useRef(0);
-  const speedDrag = -0.3;
+    return () => {
+      document.removeEventListener('motioncarousel:mousedown', handleMouseDown);
+      document.removeEventListener('motioncarousel:mouseup', handleMouseUp);
+      document.removeEventListener('motioncarousel:mousemove', handleMouseMove);
+      document.removeEventListener('motioncarousel:touchstart', handleTouchStart);
+      document.removeEventListener('motioncarousel:touchend', handleTouchEnd);
+      document.removeEventListener('motioncarousel:touchmove', handleTouchMove);
+    };
+  }, []);
 
   const handleDown = (e) => {
     isDown.current = true;
@@ -66,90 +70,55 @@ export default function MotionCarousel(props) {
     startX.current = x;
   };
 
-  useFrame(() => {
-    if (groupRef.current) {
-      const segments = groupRef.current.children;
-      const segmentAngle = (2 * Math.PI) / NUMBER_OF_SEGMENTS;
-      const active = Math.floor(progress.current / (PLANE_WIDTH + PLANE_GAP)) % NUMBER_OF_SEGMENTS;
-      setActiveSegment(active);
+  useFrame((state, delta) => {
+    ref.current.rotation.y = progress.current; // Rotate contents based on mouse drag
+    state.events.update() // Raycasts every frame rather than on pointer-move
+    // easing.damp3(state.camera.position, [-state.pointer.x * 2, state.pointer.y + 1.5, 10], 0.3, delta) // Move camera
+    // state.camera.lookAt(0, 0, 0) // Look at center
+  })
+  return <group ref={ref} {...props} />
+}
 
-      segments.forEach((segment, index) => {
-        const angle = segmentAngle * (index - active);
-        gsap.to(segment.rotation, {
-          y: angle,
-          duration: 0.5,
-          ease: 'power3.out'
-        });
-      });
-    }
-  });
+function Carousel({ radius = 1.4, count = 8 }) {
 
-  useEffect(() => {
-    window.addEventListener('pointerdown', handleDown);
-    window.addEventListener('pointerup', handleUp);
-    window.addEventListener('pointermove', handleMove);
-    window.addEventListener('pointerleave', handleUp);
-    window.addEventListener('pointercancel', handleUp);
 
-    return () => {
-      window.removeEventListener('pointerdown', handleDown);
-      window.removeEventListener('pointerup', handleUp);
-      window.removeEventListener('pointermove', handleMove);
-      window.removeEventListener('pointerleave', handleUp);
-      window.removeEventListener('pointercancel', handleUp);
-    };
-  }, []);
+  
+
+  return Array.from({ length: count }, (_, i) => (
+    <Card
+      key={i}
+      url={`/img${Math.floor(i % 10) + 1}_.jpg`}
+      position={[Math.sin((i / count) * Math.PI * 2) * radius, 0, Math.cos((i / count) * Math.PI * 2) * radius]}
+      rotation={[0, Math.PI + (i / count) * Math.PI * 2, 0]}
+    />
+  ))
+}
+
+function Card({ url, ...props }) {
+  const ref = useRef()
+  const [hovered, hover] = useState(false)
+  const pointerOver = (e) => (e.stopPropagation(), hover(true))
+  const pointerOut = () => hover(false)
+  useFrame((state, delta) => {
+    easing.damp3(ref.current.scale, hovered ? 1.15 : 1, 0.1, delta)
+    easing.damp(ref.current.material, 'radius', hovered ? 0.25 : 0.1, 0.2, delta)
+    easing.damp(ref.current.material, 'zoom', hovered ? 1 : 1.5, 0.2, delta)
+  })
+  return (
+    <Image ref={ref} url={url} transparent side={THREE.DoubleSide} onPointerOver={pointerOver} onPointerOut={pointerOut} {...props}>
+      <bentPlaneGeometry args={[0.1, 1, 1, 20, 20]} />
+    </Image>
+  )
+}
+
+export default function MotionCarousel (props) {
 
   return (
-    <>
-     {/* <OrbitControls
-        enableDamping={true}
-        dampingFactor={0.04}
-        enableRotate
-        enableZoom
-        zoomSpeed={1}
-        maxPolarAngle={Math.PI}
-        screenSpacePanning={false}
-        target={[0, 0, 0]}
+    <group {...props}>
 
-      // minDistance={35}
-      // maxDistance={10000}
-      />
-
-      <PerspectiveCamera
-        makeDefault
-        fov={65}
-        far={6000}
-        near={0.001}
-        position={[0, 0, 0]}
-      /> */}
-      <group ref={groupRef} {...props}>
-      <React.Suspense fallback={<meshBasicMaterial wireframe />}>
- 
-
-        <CylinderSplit
-          rotation={[0, (2 * Math.PI / NUMBER_OF_SEGMENTS) * 1, 0]}
-          VideoSrc={drei}
-        />
-        <CylinderSplit
-          rotation={[0, (2 * Math.PI / NUMBER_OF_SEGMENTS)* 2 , 0]}
-          VideoSrc={drei}
-        />
-        <CylinderSplit
-          rotation={[0, (2 * Math.PI  / NUMBER_OF_SEGMENTS) * 3 , 0]}
-          VideoSrc={galaxyShort}
-        />
-        <CylinderSplit
-          rotation={[0, (2 * Math.PI  / NUMBER_OF_SEGMENTS) * 4 , 0]}
-          VideoSrc={matrixShort}
-        />
-        <CylinderSplit
-          position={[0, 0, 0]}
-          rotation={[0, (2 * Math.PI  / NUMBER_OF_SEGMENTS) * 5 , 0]}
-          VideoSrc={galaxyShort}
-        />
-        </React.Suspense>
-      </group>
-    </>
-  );
+    <Rig rotation={[0, 0, 0.15]}>
+      <Carousel />
+    </Rig>
+    </group>
+  )
 }
