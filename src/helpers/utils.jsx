@@ -6,7 +6,9 @@ import { extend } from '@react-three/fiber'
 class BentPlaneGeometry extends THREE.PlaneGeometry {
     constructor(radius, ...args) {
         super(...args)
-        let p = this.parameters
+        const negative = radius < 0;
+        radius = Math.abs(radius);
+         let p = this.parameters
         let hw = p.width * 0.5
         let a = new THREE.Vector2(-hw, 0)
         let b = new THREE.Vector2(0, radius)
@@ -26,10 +28,11 @@ class BentPlaneGeometry extends THREE.PlaneGeometry {
             let uvRatio = 1 - uv.getX(i)
             let y = pos.getY(i)
             mainV.copy(c).rotateAround(center, arc * uvRatio)
-            pos.setXYZ(i, mainV.x, y, -mainV.y)
+            pos.setXYZ(i, mainV.x, y, negative ? mainV.y : -mainV.y);        
         }
         pos.needsUpdate = true
     }
+    
 }
 
 class MeshSineMaterial extends THREE.MeshBasicMaterial {

@@ -1,6 +1,6 @@
-// https://cydstumpel.nl/
-
+'use client'
 import * as THREE from 'three'
+import { getImageProps } from 'next/image'
 import { useRef, useState, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Image } from '@react-three/drei'
@@ -79,45 +79,79 @@ function Rig(props) {
   return <group ref={ref} {...props} />
 }
 
-function Carousel({ radius = 1.4, count = 8 }) {
+function Carousel({ motionData }) {
+  const radius = 1.7
+  const count = motionData.items.length
 
-
-  
-
-  return Array.from({ length: count }, (_, i) => (
+  return motionData.items.map((item, i) => (
     <Card
-      key={i}
-      url={`/img${Math.floor(i % 10) + 1}_.jpg`}
+      key={item.etag}
+      url={item.snippet.thumbnails.high.url}
       position={[Math.sin((i / count) * Math.PI * 2) * radius, 0, Math.cos((i / count) * Math.PI * 2) * radius]}
-      rotation={[0, Math.PI + (i / count) * Math.PI * 2, 0]}
+      rotation={[0, (i / count) * Math.PI * 2, 0]}
+      title={item.snippet.title}
     />
   ))
 }
 
-function Card({ url, ...props }) {
+function getOptimizedImageProps(src) {
+  return new Promise((resolve) => {
+    const imageData = getImageProps({
+      src,
+      quality: 75,
+      // fill: true,
+      height: 1080,
+      width: 720
+
+    });
+
+    // console.log("🚀 ~ getOptimizedImageProps ~ imageData:", imageData)
+    resolve(imageData);
+  });
+}
+
+
+
+function Card({ url, title, ...props }) {
+  
   const ref = useRef()
   const [hovered, hover] = useState(false)
   const pointerOver = (e) => (e.stopPropagation(), hover(true))
   const pointerOut = () => hover(false)
+  const [imageSrc, setImageSrc] = useState(null)
+
+  const baseURL = process.env.NEXT_PUBLIC_DOMAIN 
+
+
+  useEffect(() => {
+    getOptimizedImageProps(url).then(data => {
+      setImageSrc(baseURL + data.props.src);
+    });
+  }, [url]);
+
   useFrame((state, delta) => {
+    if (ref.current) {
     easing.damp3(ref.current.scale, hovered ? 1.15 : 1, 0.1, delta)
-    easing.damp(ref.current.material, 'radius', hovered ? 0.25 : 0.1, 0.2, delta)
-    easing.damp(ref.current.material, 'zoom', hovered ? 1 : 1.5, 0.2, delta)
+    easing.damp(ref.current.material, 'radius', hovered ? 0.25 : 0.03, 0.2, delta)
+    easing.damp(ref.current.material, 'zoom', hovered ? 1 : 0.7, 0.2, delta)
+    }
   })
-  return (
-    <Image ref={ref} url={url} transparent side={THREE.DoubleSide} onPointerOver={pointerOver} onPointerOut={pointerOut} {...props}>
-      <bentPlaneGeometry args={[0.1, 1, 1, 20, 20]} />
+  
+
+  return imageSrc ? (
+    <Image ref={ref} scale={0.5} url={imageSrc} transparent side={THREE.DoubleSide} onPointerOver={pointerOver} onPointerOut={pointerOut} {...props}>
+      <bentPlaneGeometry args={[-0.1, 1, 1, 20, 20]} />
     </Image>
-  )
+  ) : null
 }
 
-export default function MotionCarousel (props) {
+export default function MotionCarousel ({motionData, ...props}) {
+// console.log("🚀 ~ MotionCarousel ~ motionData:", motionData)
 
   return (
     <group {...props}>
-
     <Rig rotation={[0, 0, 0.15]}>
-      <Carousel />
+      <Carousel motionData={motionData}/>
     </Rig>
     </group>
   )

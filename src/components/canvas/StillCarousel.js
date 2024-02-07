@@ -3,10 +3,9 @@ import { useEffect, useRef, useState, useMemo } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { usePrevious } from 'react-use'
 import gsap from 'gsap'
-import CarouselItem from './CarouselItem'
+import CarouselItem from './StillCarouselItem'
 import { lerp, getPiramidalIndex } from '../../helpers/utils'
-import images from '../data/images'
-import PostProcessing from './PostProcessing'
+import images2 from '../data/images'
 
 /*------------------------------
 Plane Settings
@@ -28,7 +27,10 @@ gsap.defaults({
 /*------------------------------
 Carousel
 ------------------------------*/
-const StillCarousel = (props) => {
+const StillCarousel = ({stillData}, props) => {
+  
+  const images = stillData
+  
   const [$root, setRoot] = useState()
   const $post = useRef()
 
@@ -189,16 +191,18 @@ const StillCarousel = (props) => {
     return (
       <group ref={setRoot}>
         {images.map((item, i) => (
+          
           <CarouselItem
             width={planeSettings.width}
             height={planeSettings.height}
             setActivePlane={setActivePlane}
             activePlane={activePlane}
-            key={item.image}
+            key={item.src}
             item={item}
             index={i}
           />
-        ))}
+        )
+  )}
       </group>
     )
   }
@@ -207,7 +211,6 @@ const StillCarousel = (props) => {
     <group {...props}>
       {renderPlaneEvents()}
       {renderSlider()}
-      {/* <PostProcessing ref={$post} /> */}
     </group>
   )
 }

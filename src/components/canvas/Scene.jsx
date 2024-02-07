@@ -11,6 +11,8 @@ import { EffectComposer, DepthOfField } from '@react-three/postprocessing'
 
 
 
+
+
 export default function Scene({ ...props }) {
 
   const canvasRef = useRef()
@@ -31,6 +33,7 @@ export default function Scene({ ...props }) {
 
       <r3f.Out />
       <AdaptiveDpr pixelated />
+
       <EffectComposer>
         <DepthOfField
           focusDistance={0.9} // where to focus
@@ -38,7 +41,7 @@ export default function Scene({ ...props }) {
           bokehScale={6} // bokeh size
         />
       </EffectComposer>
-     
+
 
       <Preload all />
     </Canvas>

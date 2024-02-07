@@ -12,11 +12,10 @@ const InstancesMountains = dynamic(() => import('@/components/canvas/Mountains/I
 
 
 
-
 export default function Mountains({ scroll }, props) {
   const group = useRef()
   const actionSlider = scroll;
-  
+
   const { nodes, materials, animations } = useGLTF('/mountains.glb');
 
   const { actions } = useAnimations(animations, group)
@@ -80,6 +79,7 @@ export default function Mountains({ scroll }, props) {
     <>
     <group ref={group} {...props} dispose={null}>
       <group name="Scene">
+
         <PerspectiveCamera name="CameraAction" makeDefault={true} far={1000000} near={0.1} fov={36.2} position={[-353.926, 88.438, 56.419]} rotation={[-0.42, -1.381, -0.413]} />
         {/* <OrbitControls /> */}
         {/* <mesh name="EverestDistant1HD" geometry={nodes.EverestDistant1HD.geometry} material={new THREE.MeshBasicMaterial({color: 'red', transparent: true, opacity: 0.9})} position={[-101.238, 48.691, 505.312]} />

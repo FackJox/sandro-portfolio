@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 
 const StillCarousel = dynamic(() => import('@/components/canvas/StillCarousel'), { ssr: false })
@@ -33,7 +33,16 @@ const View = dynamic(() => import('@/components/canvas/View').then((mod) => mod.
 })
 const Common = dynamic(() => import('@/components/canvas/View').then((mod) => mod.Common), { ssr: false })
 
-export default function Home() {
+export default function Home({carouselData}) {
+
+    // useEffect(() => {
+    //     console.log("🚀 ~ Home ~ carouselData Motion:", carouselData.motion)
+    //     console.log("🚀 ~ Home ~ carouselData Stills:", carouselData.stills)
+
+    // }, [carouselData])
+
+
+    
     const [scrollPercentage, setScrollPercentage] = useState(0);
 
     const handleScroll = (e) => {
@@ -42,54 +51,18 @@ export default function Home() {
         setScrollPercentage((currentScroll / totalScroll) * 100);
     };
 
-    const handleMouseDownMotion = (e) => {
-        // Forward the event to the MotionCarousel component
-        document.dispatchEvent(new CustomEvent('motioncarousel:mousedown', { detail: e }));
-    };
-
-    const handleMouseUpMotion = (e) => {
-        document.dispatchEvent(new CustomEvent('motioncarousel:mouseup', { detail: e }));
-    };
-
-    const handleMouseMoveMotion = (e) => {
-        document.dispatchEvent(new CustomEvent('motioncarousel:mousemove', { detail: e }));
-    };
-
-    const handleTouchStartMotion = (e) => {
-        document.dispatchEvent(new CustomEvent('motioncarousel:touchstart', { detail: e }));
-    };
-
-    const handleTouchEndMotion = (e) => {
-        document.dispatchEvent(new CustomEvent('motioncarousel:touchend', { detail: e }));
-    };
-
-    const handleTouchMoveMotion = (e) => {
-        document.dispatchEvent(new CustomEvent('motioncarousel:touchmove', { detail: e }));
-    };
-
-    const handleMouseDownStill = (e) => {
-        document.dispatchEvent(new CustomEvent('stillcarousel:mousedown', { detail: e }));
-    };
-
-    const handleMouseUpStill = (e) => {
-        document.dispatchEvent(new CustomEvent('stillcarousel:mouseup', { detail: e }));
-    };
-
-    const handleMouseMoveStill = (e) => {
-        document.dispatchEvent(new CustomEvent('stillcarousel:mousemove', { detail: e }));
-    };
-
-    const handleTouchStartStill = (e) => {
-        document.dispatchEvent(new CustomEvent('stillcarousel:touchstart', { detail: e }));
-    };
-
-    const handleTouchEndStill = (e) => {
-        document.dispatchEvent(new CustomEvent('stillcarousel:touchend', { detail: e }));
-    };
-
-    const handleTouchMoveStill = (e) => {
-        document.dispatchEvent(new CustomEvent('stillcarousel:touchmove', { detail: e }));
-    };
+    const handleMouseDownMotion = (e) => { document.dispatchEvent(new CustomEvent('motioncarousel:mousedown', { detail: e })) };
+    const handleMouseUpMotion = (e) => { document.dispatchEvent(new CustomEvent('motioncarousel:mouseup', { detail: e })) };
+    const handleMouseMoveMotion = (e) => { document.dispatchEvent(new CustomEvent('motioncarousel:mousemove', { detail: e })) };
+    const handleTouchStartMotion = (e) => { document.dispatchEvent(new CustomEvent('motioncarousel:touchstart', { detail: e })) };
+    const handleTouchEndMotion = (e) => { document.dispatchEvent(new CustomEvent('motioncarousel:touchend', { detail: e })) };
+    const handleTouchMoveMotion = (e) => { document.dispatchEvent(new CustomEvent('motioncarousel:touchmove', { detail: e })) };
+    const handleMouseDownStill = (e) => { document.dispatchEvent(new CustomEvent('stillcarousel:mousedown', { detail: e })) };
+    const handleMouseUpStill = (e) => { document.dispatchEvent(new CustomEvent('stillcarousel:mouseup', { detail: e })) };
+    const handleMouseMoveStill = (e) => { document.dispatchEvent(new CustomEvent('stillcarousel:mousemove', { detail: e })) };
+    const handleTouchStartStill = (e) => { document.dispatchEvent(new CustomEvent('stillcarousel:touchstart', { detail: e })) };
+    const handleTouchEndStill = (e) => { document.dispatchEvent(new CustomEvent('stillcarousel:touchend', { detail: e })) };
+    const handleTouchMoveStill = (e) => { document.dispatchEvent(new CustomEvent('stillcarousel:touchmove', { detail: e })) };
 
 
     return (
@@ -140,7 +113,7 @@ export default function Home() {
                         onTouchMove={handleTouchMoveStill}>
                         <View className='w-full h-full'>
                             <Suspense fallback={null}>
-                                <StillCarousel scale={1} position={[0, 0, 0]} rotation={[0, 0, 0]} />
+                                <StillCarousel scale={1} position={[0, 0, 0]} rotation={[0, 0, 0]} stillData={carouselData.stills} />
                                 <Common color={['lightblue', 0]} />
 
                             </Suspense>
@@ -148,7 +121,7 @@ export default function Home() {
                     </div>
 
 
-                    <div className='flex items-center justify-center w-screen h-96 p-6 bg-black'>
+                    <div className='flex items-center justify-center w-screen h-64 p-6 bg-black'>
                         <p className='font-Poppins text-xl text-yellow text-center md:text-3xl '>
                             I love people, cameras and mountains and have spent the last decade bringing those passions together.
                         </p>
@@ -164,13 +137,13 @@ export default function Home() {
                     >
                         <View className='w-full h-full' >
                             <Suspense fallback={null}>
-                                <MotionCarousel scale={1} position={[0, -0.2, 2.4]} />
+                                <MotionCarousel scale={1.8} position={[0, 0, 0]} motionData={carouselData.motion}/>
                                 <Common color={['lightblue', 0]} />
                             </Suspense>
                         </View>
                     </div>
 
-                    <div className='flex justify-center items-center w-screen h-96 p-6 bg-black z-40'>
+                    <div className='flex justify-center items-center w-screen h-64 p-6 bg-black z-40'>
                         <p className='font-Poppins text-xl text-yellow text-center w-screen bg-transparent z-40 md:text-3xl '>
                             Previous clients include: <br />
                             Red Bull TV, Epic TV, Montane, Berghaus, Osprey and North Face

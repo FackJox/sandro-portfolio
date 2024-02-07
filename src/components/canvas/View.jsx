@@ -5,7 +5,10 @@ import { OrbitControls, PerspectiveCamera, View as ViewImpl } from '@react-three
 import { Three } from '@/helpers/components/Three'
 
 
-export const Common = ({ color }) => (
+export const Common = ({ color }) => {
+
+  
+  return (
   <Suspense fallback={null}>
     {/* {color && <color attach='background' args={[color]} />} */}
     {/* <ambientLight />
@@ -16,9 +19,10 @@ export const Common = ({ color }) => (
       minPolarAngle={Math.PI / 6} // Limit to 30 degrees up
       maxPolarAngle={Math.PI / 6} // Limit to 30 degrees down
     /> */}
+
   </Suspense>
 )
-
+  }
 const View = forwardRef(({ children, orbit, ...props }, ref) => {
   const localRef = useRef(null)
   useImperativeHandle(ref, () => localRef.current)

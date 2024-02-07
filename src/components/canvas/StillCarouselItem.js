@@ -69,13 +69,19 @@ const CarouselItem = ({
       onClick={() => {
         setActivePlane(index)
       }}
-      onPointerEnter={() => setHover(true)}
-      onPointerLeave={() => setHover(false)}
+      onPointerEnter={() => {
+        console.log('Pointer entered', index); // Log when pointer enters
+        setHover(true)
+      }}
+      onPointerLeave={() => {
+        console.log('Pointer left', index); // Log when pointer leaves
+        setHover(false)
+      }}
     >
       <Plane
         width={width}
         height={height}
-        texture={item.image}
+        texture={item.src}
         active={isActive}
       />
 
